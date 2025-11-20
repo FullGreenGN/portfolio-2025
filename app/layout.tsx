@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/navbar";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { siteConfig } from "@/lib/site-config";
+import {Footer} from "@/components/ui/footer";
+import {Providers} from "@/components/providers";
 
 const jetbrainsMono = JetBrains_Mono({
 	variable: "--font-jetbrains-mono",
@@ -23,15 +25,12 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${jetbrainsMono.variable} antialiased`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
-				>
-					<Navbar />
-					{children}
-				</ThemeProvider>
+				<Providers>
+                    <ScrollProgress />
+                    <Navbar />
+                    {children}
+                    <Footer/>
+                </Providers>
 			</body>
 		</html>
 	);

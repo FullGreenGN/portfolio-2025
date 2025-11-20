@@ -279,7 +279,7 @@ function AnimatedHeroContent() {
 						transitionDelay: isLoaded ? "200ms" : "0ms",
 					}}
 				>
-					Full‑Stack Developer / DevOps Engineer
+					FullStack Developer • System Administrator • DevOps Engineer
 				</p>
 
 				<h1
@@ -288,7 +288,6 @@ function AnimatedHeroContent() {
 						transitionDelay: isLoaded ? "400ms" : "0ms",
 					}}
 				>
-
                     <EncryptedText
                         text="Jean‑Luc O."
                         revealDelayMs={140}
@@ -301,7 +300,7 @@ function AnimatedHeroContent() {
 						transitionDelay: isLoaded ? "600ms" : "0ms",
 					}}
 				>
-					System Administrator
+					Building modern web experiences
 				</p>
 			</div>
 

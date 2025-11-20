@@ -104,12 +104,10 @@ export const Navbar = () => {
     const link: Links[] = [{
         name: "Home", href: "#home",
     }, {
-        name: "About", href: "#about",
-    }, {
         name: "Projects", href: "#projects",
     }, {
         name: "Contact", href: "#contact",
-    },]
+    }]
 
     const baseClasses = "duration-300 fixed inset-x-0 top-6 transition-all z-50 w-full";
     const scrolledClasses = "backdrop-blur-md border border-white/20 bg-white/10";
