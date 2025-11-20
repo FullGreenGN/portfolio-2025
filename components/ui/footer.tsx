@@ -18,8 +18,8 @@ export const Footer = () => {
     ];
 
     return (
-        <footer className="border-border/40 bg-background/50 backdrop-blur-sm">
-            <div className="container mx-auto px-6 py-12">
+        <footer className="container m-8 mx-auto flex w-full items-center justify-between rounded-xl border border-white/20 bg-white/10 px-6 py-4 backdrop-blur-md">
+            <div className="mx-auto px-6 py-12">
                 {/* Main Footer Content */}
                 <div className="grid gap-8 md:grid-cols-3">
                     {/* Brand Section */}
