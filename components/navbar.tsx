@@ -5,6 +5,7 @@ import {useEffect, useState, useRef} from "react";
 import {FaInfinity} from "react-icons/fa6";
 import {HiOutlineMenu} from "react-icons/hi";
 import type {Links} from "@/types/links";
+import Link from "next/link";
 
 const HOVER_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 function generateHoverRandom(charset: string) {
@@ -118,7 +119,9 @@ export const Navbar = () => {
         className={`${baseClasses} ${scrolled ? scrolledClasses : idleClasses} container mx-auto flex w-full items-center justify-between rounded-xl px-6 py-4`}>
         {/* Logo */}
         <div className="flex items-center">
-            <FaInfinity className="text-2xl text-white"/>
+            <Link href={"https://polarisdev.fr"}>
+                <FaInfinity className="text-2xl text-white"/>
+            </Link>
         </div>
 
         {/* Desktop Navigation */}
