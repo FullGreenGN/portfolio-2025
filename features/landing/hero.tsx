@@ -170,7 +170,7 @@ interface GLSLHillsProps {
 }
 
 export const GLSLHills = ({
-	width = "100vw",
+	width = "100%",
 	height = "100vh",
 	cameraZ = 125,
 	planeSize = 256,
@@ -197,12 +197,15 @@ export const GLSLHills = ({
 
 		const resize = () => {
 			const canvas = canvasRef.current;
-			if (!canvas) return;
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-			camera.aspect = window.innerWidth / window.innerHeight;
+			const container = containerRef.current;
+			if (!canvas || !container) return;
+			const rect = container.getBoundingClientRect();
+			const width = Math.max(1, Math.floor(rect.width));
+			const height = Math.max(1, Math.floor(rect.height));
+			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
-			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setPixelRatio(window.devicePixelRatio || 1);
+			renderer.setSize(width, height, false); // false keeps DOM style untouched because canvas CSS is 100%/100%
 		};
 
 		const render = () => {
@@ -216,7 +219,6 @@ export const GLSLHills = ({
 		};
 
 		const init = () => {
-			renderer.setSize(window.innerWidth, window.innerHeight);
 			renderer.setClearColor(0x000000, 0);
 			camera.position.set(0, 16, cameraZ);
 			camera.lookAt(new THREE.Vector3(0, 28, 0));
@@ -243,7 +245,7 @@ export const GLSLHills = ({
 	}, [cameraZ, planeSize, speed]);
 
 	return (
-		<div ref={containerRef} style={{ position: "relative", width, height }}>
+		<div ref={containerRef} style={{ position: "relative", width, height, overflow: "hidden" }}>
 			<canvas
 				ref={canvasRef}
 				style={{
@@ -271,7 +273,7 @@ function AnimatedHeroContent() {
 	}, []);
 
 	return (
-		<section className="relative flex h-screen w-full flex-col items-center justify-center overflow-hidden text-white">
+		<section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden text-white">
 			<div className="space-y-6 text-center">
 				<p
 					className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
