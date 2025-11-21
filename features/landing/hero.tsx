@@ -1,38 +1,27 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import * as THREE from "three";
 import {EncryptedText} from "@/components/ui/encrypted-text";
 
 // TypeScript
 class Plane {
-	uniforms: { time: { value: number } };
-	mesh: THREE.Mesh;
-	time: number;
-	planeSize: number;
+    uniforms: { time: { value: number } };
+    mesh: THREE.Mesh;
+    time: number;
+    planeSize: number;
 
-	constructor(
-		planeSize: number,
-		speed: number,
-	) {
-		this.planeSize = planeSize;
-		this.uniforms = {
-			time: { value: 0 },
-		};
-		this.mesh = this.createMesh();
-		this.time = speed;
-	}
+    constructor(planeSize: number, speed: number,) {
+        this.planeSize = planeSize;
+        this.uniforms = {
+            time: {value: 0},
+        };
+        this.mesh = this.createMesh();
+        this.time = speed;
+    }
 
-	createMesh() {
-		return new THREE.Mesh(
-			new THREE.PlaneGeometry(
-				this.planeSize,
-				this.planeSize,
-				this.planeSize,
-				this.planeSize,
-			),
-			new THREE.RawShaderMaterial({
-				uniforms: this.uniforms as Record<string, { value: number }>,
-				vertexShader: `
+    createMesh() {
+        return new THREE.Mesh(new THREE.PlaneGeometry(this.planeSize, this.planeSize, this.planeSize, this.planeSize,), new THREE.RawShaderMaterial({
+            uniforms: this.uniforms as Record<string, { value: number }>, vertexShader: `
                     #define GLSLIFY 1
               attribute vec3 position;
               uniform mat4 projectionMatrix;
@@ -139,8 +128,7 @@ class Plane {
                 vPosition = lastPosition;
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0);
               }
-                `,
-				fragmentShader: `
+                `, fragmentShader: `
                 precision highp float;
               #define GLSLIFY 1
               varying vec3 vPosition;
@@ -150,181 +138,156 @@ class Plane {
                 vec3 color = vec3(0.6);
                 gl_FragColor = vec4(color, opacity);
               }
-              `,
-				transparent: true,
-			}),
-		);
-	}
+              `, transparent: true,
+        }),);
+    }
 
-	render(time: number) {
-		this.uniforms.time.value += time * this.time;
-	}
+    render(time: number) {
+        this.uniforms.time.value += time * this.time;
+    }
 }
 
 interface GLSLHillsProps {
-	width?: string;
-	height?: string;
-	cameraZ?: number;
-	planeSize?: number;
-	speed?: number;
+    width?: string;
+    height?: string;
+    cameraZ?: number;
+    planeSize?: number;
+    speed?: number;
 }
 
-export const GLSLHills = ({
-	width = "100%",
-	height = "100vh",
-	cameraZ = 125,
-	planeSize = 256,
-	speed = 0.5,
-}: GLSLHillsProps) => {
-	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-	const containerRef = useRef<HTMLDivElement | null>(null);
+export const GLSLHills = ({width = '100vw', height = '100vh', cameraZ = 125, planeSize = 256, speed = 0.5}: GLSLHillsProps) => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
-	useEffect(() => {
-		// Three.js setup
-		const renderer = new THREE.WebGLRenderer({
-			canvas: canvasRef.current ?? undefined,
-			antialias: false,
-		});
-		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(
-			45,
-			window.innerWidth / window.innerHeight,
-			1,
-			10000,
-		);
-		const clock = new THREE.Clock();
-		const plane = new Plane(planeSize, speed);
+    useEffect(() => {
+        // Three.js setup
+        const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current ?? undefined, antialias: false });
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+        const clock = new THREE.Clock();
+        const plane = new Plane(planeSize, speed);
 
-		const resize = () => {
-			const canvas = canvasRef.current;
-			const container = containerRef.current;
-			if (!canvas || !container) return;
-			const rect = container.getBoundingClientRect();
-			const width = Math.max(1, Math.floor(rect.width));
-			const height = Math.max(1, Math.floor(rect.height));
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
-			renderer.setPixelRatio(window.devicePixelRatio || 1);
-			renderer.setSize(width, height, false); // false keeps DOM style untouched because canvas CSS is 100%/100%
-		};
+        const resize = () => {
+            const canvas = canvasRef.current;
 
-		const render = () => {
-			plane.render(clock.getDelta());
-			renderer.render(scene, camera);
-		};
+            if(!canvas) return;
 
-		const renderLoop = () => {
-			render();
-			requestAnimationFrame(renderLoop);
-		};
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
 
-		const init = () => {
-			renderer.setClearColor(0x000000, 0);
-			camera.position.set(0, 16, cameraZ);
-			camera.lookAt(new THREE.Vector3(0, 28, 0));
-			scene.add(plane.mesh);
-			window.addEventListener("resize", resize);
-			resize();
-			renderLoop();
-		};
+        const render = () => {
+            plane.render(clock.getDelta());
+            renderer.render(scene, camera);
+        };
 
-		init();
+        const renderLoop = () => {
+            render();
+            requestAnimationFrame(renderLoop);
+        };
 
-		return () => {
-			window.removeEventListener("resize", resize);
-			// dispose three resources when unmounting
-			try {
-				scene.remove(plane.mesh);
-				(plane.mesh.material as THREE.Material).dispose?.();
-				plane.mesh.geometry.dispose?.();
-				renderer.dispose();
-			} catch {
-				// ignore dispose errors
-			}
-		};
-	}, [cameraZ, planeSize, speed]);
+        const init = () => {
+            renderer.setClearColor(0x000000, 0);
+            camera.position.set(0, 16, cameraZ);
+            camera.lookAt(new THREE.Vector3(0, 28, 0));
+            scene.add(plane.mesh);
+            window.addEventListener("resize", resize);
+            resize();
+            renderLoop();
+        };
 
-	return (
-		<div ref={containerRef} style={{ position: "relative", width, height, overflow: "hidden" }}>
-			<canvas
-				ref={canvasRef}
-				style={{
-					position: "absolute",
-					top: 0,
-					right: 0,
-					bottom: 0,
-					left: 0,
-					zIndex: 1,
-				}}
-			/>
-			<div className="absolute inset-0 z-10 flex items-center justify-center">
-				<AnimatedHeroContent />
-			</div>
-		</div>
-	);
+        init();
+
+        return () => {
+            window.removeEventListener("resize", resize);
+            // dispose three resources when unmounting
+            try {
+                scene.remove(plane.mesh);
+                (plane.mesh.material as THREE.Material).dispose?.();
+                plane.mesh.geometry.dispose?.();
+                renderer.dispose();
+            } catch {
+                // ignore dispose errors
+            }
+        };
+    }, [cameraZ, planeSize, speed]);
+
+    return (<div ref={containerRef} style={{position: "relative", width, height, overflow: "hidden"}}>
+            <canvas
+                ref={canvasRef}
+                style={{
+                    position: "absolute", top: 0, right: 0, bottom: 0, left: 0, zIndex: 1,
+                }}
+            />
+            <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <AnimatedHeroContent/>
+            </div>
+        </div>);
 };
 
 function AnimatedHeroContent() {
-	const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-	useEffect(() => {
-		const raf = requestAnimationFrame(() => setIsLoaded(true));
-		return () => cancelAnimationFrame(raf);
-	}, []);
+    useEffect(() => {
+        const raf = requestAnimationFrame(() => setIsLoaded(true));
+        return () => cancelAnimationFrame(raf);
+    }, []);
 
-	return (
-		<section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden text-white">
-			<div className="space-y-6 text-center">
-				<p
-					className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
-					style={{
-						transitionDelay: isLoaded ? "200ms" : "0ms",
-					}}
-				>
-					FullStack Developer • System Administrator • DevOps Engineer
-				</p>
+    return (<section
+            className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden text-white">
+            <div className="space-y-6 text-center">
+                <p
+                    className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+                    style={{
+                        transitionDelay: isLoaded ? "200ms" : "0ms",
+                    }}
+                >
+                    FullStack Developer • System Administrator • DevOps Engineer
+                </p>
 
-				<h1
-					className={`font-bold text-6xl tracking-tight transition-all duration-700 md:text-8xl ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
-					style={{
-						transitionDelay: isLoaded ? "400ms" : "0ms",
-					}}
-				>
+                <h1
+                    className={`font-bold text-6xl tracking-tight transition-all duration-700 md:text-8xl ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
+                    style={{
+                        transitionDelay: isLoaded ? "400ms" : "0ms",
+                    }}
+                >
                     <EncryptedText
                         text="Jean‑Luc O."
                         revealDelayMs={140}
                     />
-				</h1>
+                </h1>
 
-				<p
-					className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
-					style={{
-						transitionDelay: isLoaded ? "600ms" : "0ms",
-					}}
-				>
-					Building modern web experiences
-				</p>
-			</div>
+                <p
+                    className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+                    style={{
+                        transitionDelay: isLoaded ? "600ms" : "0ms",
+                    }}
+                >
+                    Building modern web experiences
+                </p>
+            </div>
 
-			<div
-				className={`absolute bottom-8 left-8 animate-bounce text-sm opacity-80 transition-all duration-700 ${isLoaded ? "opacity-80" : "opacity-0"}`}
-				style={{
-					transitionDelay: isLoaded ? "800ms" : "0ms",
-				}}
-			>
-				<div className="flex items-center gap-2">↓ Scroll to discover</div>
-			</div>
+            <div
+                className={`absolute bottom-8 left-8 animate-bounce text-sm opacity-80 transition-all duration-700 ${isLoaded ? "opacity-80" : "opacity-0"}`}
+                style={{
+                    transitionDelay: isLoaded ? "800ms" : "0ms",
+                }}
+            >
+                <div className="flex items-center gap-2">↓ Scroll to discover</div>
+            </div>
 
-			<div
-				className={`absolute right-8 bottom-8 text-sm opacity-80 transition-all duration-700 ${isLoaded ? "opacity-80" : "opacity-0"}`}
-				style={{
-					transitionDelay: isLoaded ? "800ms" : "0ms",
-				}}
-			>
-				Portfolio 2025
-			</div>
-		</section>
-	);
+            <div
+                className={`absolute right-8 bottom-8 text-sm opacity-80 transition-all duration-700 ${isLoaded ? "opacity-80" : "opacity-0"}`}
+                style={{
+                    transitionDelay: isLoaded ? "800ms" : "0ms",
+                }}
+            >
+                Portfolio 2025
+            </div>
+        </section>);
 }
 
 export default GLSLHills;

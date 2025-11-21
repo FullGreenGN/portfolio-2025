@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 import type React from "react";
 
@@ -66,6 +66,11 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
         // Use a deterministic placeholder on initial render to avoid SSR/CSR mismatches
         text ? text.split("").map((ch) => (ch === " " ? " " : "•")) : [],
     );
+
+    // stable keys per character computed with useMemo
+    const charKeys = useMemo(() => (
+        text ? text.split("").map((ch, i) => `${ch.charCodeAt(0)}-${text.length}-${i}`) : []
+    ), [text]);
 
     // Keep the displayed scramble characters in state so render reads stable values
     const [scrambleChars, setScrambleChars] = useState<string[]>(() =>
@@ -138,10 +143,9 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
     if (!text) return null;
 
     return (
-        <motion.span
+        <span
             ref={ref}
             className={cn(className)}
-            aria-label={text}
         >
             {text.split("").map((char, index) => {
                 const isRevealed = index < revealCount;
@@ -149,15 +153,17 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
                     ? char
                     : scrambleChars[index] ?? "•";
 
+                const charKey = charKeys[index] ?? `${char}-${index}`;
+
                 return (
                     <span
-                        key={`${index}-${char}`}
+                        key={charKey}
                         className={cn(isRevealed ? revealedClassName : encryptedClassName)}
                     >
             {displayChar}
           </span>
                 );
             })}
-        </motion.span>
+        </span>
     );
 };
