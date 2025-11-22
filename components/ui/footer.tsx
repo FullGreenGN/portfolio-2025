@@ -77,9 +77,14 @@ export const Footer = () => {
                         <p className="text-muted-foreground text-sm">
                             © {currentYear} Jean‑Luc O. All rights reserved.
                         </p>
-                        <p className="text-muted-foreground text-xs">
-                            Built with Next.js, TypeScript & Tailwind CSS
-                        </p>
+                        <div className={"flex items-center gap-2"}>
+                            <p className="text-muted-foreground text-xs">
+                                Propelled by{" "}
+                            </p>
+                            <Link href={"https://polarisdev.fr"} className={"text-muted-foreground/70 text-sm hover:underline"} target={"_blank"} rel={"noopener noreferrer"}>
+                                Polaris Dev.
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

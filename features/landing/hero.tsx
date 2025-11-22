@@ -2,6 +2,7 @@
 import {useEffect, useRef, useState} from "react";
 import * as THREE from "three";
 import {EncryptedText} from "@/components/ui/encrypted-text";
+import {FaInfinity} from "react-icons/fa6";
 
 // TypeScript
 class Plane {
@@ -260,14 +261,17 @@ function AnimatedHeroContent() {
                     />
                 </h1>
 
-                <p
-                    className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
-                    style={{
-                        transitionDelay: isLoaded ? "600ms" : "0ms",
-                    }}
-                >
-                    Building modern web experiences
-                </p>
+                <div className={"flex items-center justify-center gap-4"}>
+                    <FaInfinity />
+                    <p
+                        className={`text-lg opacity-80 transition-all duration-700 ${isLoaded ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+                        style={{
+                            transitionDelay: isLoaded ? "600ms" : "0ms",
+                        }}
+                    >
+                        {" "} Polaris Dev. Team Leader
+                    </p>
+                </div>
             </div>
 
             <div

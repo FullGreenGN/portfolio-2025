@@ -18,7 +18,7 @@ export const Navbar = () => {
     }, []);
 
     const link: Links[] = [{
-        name: "Home", href: "#home",
+        name: "Home", href: "/",
     }, {
         name: "Projects", href: "#projects",
     }, {
