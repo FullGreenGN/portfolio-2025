@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { EncryptedText } from "@/components/ui/encrypted-text";
 
@@ -49,9 +48,3 @@ export const FocusCard = React.memo(
 );
 
 FocusCard.displayName = "Card";
-
-type CardData = {
-  title: string;
-  src: string;
-  href?: string; // optional link target
-};

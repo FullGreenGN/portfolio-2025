@@ -7,6 +7,7 @@ import {useState} from "react";
 import {Badge} from "@/components/ui/badge";
 import type {Project} from "@/features/work/projects";
 import {FaGithub} from "react-icons/fa6";
+import FisheyeShader, {type FisheyeSettings} from "@/components/fisheye-shader";
 
 interface ContentBlock {
     type: "text" | "image";
@@ -27,20 +28,26 @@ function stableKeyForContent(block: ContentBlock, idx: number) {
     }
 }
 
+const settings: FisheyeSettings = {
+    fisheyeStrength: 1.0,
+    vignetteStart: 0.3,
+    vignetteEnd: 0.8,
+    fisheyeRadius: 0.7,
+    chromaticAberration: 0.005,
+    noiseIntensity: 0.05,
+    vignetteIntensity: 0.32,
+    animationDuration: 0.64,
+    canvasOpacity: 1.0,
+    showVignetteMask: false,
+};
+
 export default function ProjectPage({project}: { project: Project }) {
     const [hovered, setHovered] = useState<number | null>(null);
 
     return (<main className="min-h-screen bg-background text-foreground">
         {/* Hero Section with Cover Image */}
         <section className="relative h-96 w-full overflow-hidden bg-card md:h-screen md:max-h-[600px]">
-            <Image
-                src={project.coverImage || "/placeholder.svg"}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"/>
+            <FisheyeShader src={project.coverImage} settings={settings}/>
         </section>
 
         {/* Project Header */}
