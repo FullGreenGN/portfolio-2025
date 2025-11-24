@@ -51,7 +51,7 @@ export default function ProjectPage({project}: { project: Project }) {
         </section>
 
         {/* Project Header */}
-        <section className="border-border border-b px-6 py-12 md:px-12 md:py-20 lg:px-16">
+        <section className={"border-border border-b px-6 py-12 md:px-12 md:py-20 lg:px-16"}>
             <div className="mx-auto max-w-6xl">
                 <div className="mb-8 flex items-start justify-between gap-8">
                     <div className="flex-1">
@@ -106,7 +106,7 @@ export default function ProjectPage({project}: { project: Project }) {
         </section>
 
         {/* Project Content */}
-        <section className="border-border border-b px-6 py-12 md:px-12 md:py-20 lg:px-16">
+        <section className="px-6 py-12 md:px-12 md:py-20 lg:px-16">
             <div className="mx-auto max-w-4xl space-y-12">
                 {project.content.map((block, idx) => {
                     const key = stableKeyForContent(block, idx)

@@ -7,6 +7,7 @@ import {HiOutlineMenu} from "react-icons/hi";
 import type {Links} from "@/types/links";
 import Link from "next/link";
 import {HoverEncryptedLink} from "@/components/ui/encrypted-hover-text";
+import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/components/ui/sheet";
 
 export const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -45,9 +46,29 @@ export const Navbar = () => {
             ))}
         </div>
 
-        {/* Mobile Hamburger */}
-        <div className="md:hidden">
-            <HiOutlineMenu className="text-2xl text-white"/>
-        </div>
+        <MobileNavbar links={link}/>
     </nav>);
 };
+
+function MobileNavbar({links}: {links: Links[]}) {
+    return (
+        <Sheet>
+            <SheetTrigger className={"md:hidden"}>
+                <HiOutlineMenu className="text-2xl text-white"/>
+            </SheetTrigger>
+            <SheetContent>
+                <div className="mt-10 ml-4 flex flex-col gap-6">
+                    {links.map((item, index) => (
+                        <Link href={item.href} key={item.name ?? index} className="font-medium text-lg text-white/90 hover:text-white">
+                            {item.name}
+                        </Link>
+                    ))}
+                </div>
+                <SheetFooter>
+                    <div className="mb-6 ml-4 text-white/70">© {new Date().getFullYear()} Jean‑Luc O.</div>
+                </SheetFooter>
+            </SheetContent>
+
+        </Sheet>
+    )
+}

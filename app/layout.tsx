@@ -4,7 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { siteConfig } from "@/lib/site-config";
-import {Footer} from "@/components/ui/footer";
+import {Footer} from "@/components/footer";
 import {Providers} from "@/components/providers";
 
 const jetbrainsMono = JetBrains_Mono({
