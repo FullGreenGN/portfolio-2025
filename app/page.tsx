@@ -37,7 +37,7 @@ export function FocusCardsDemo() {
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-10 md:grid-cols-3 md:px-8">
             {items.map((rp, idx) => (
                 <Link key={rp.slug} href={`/work/${rp.slug}`} className="block">
-                    <FocusCard card={{src: rp.coverImage || '/img.png', title: rp.title}} index={idx} hovered={hovered}
+                    <FocusCard card={{src: rp.smallCoverImage, title: rp.title}} index={idx} hovered={hovered}
                                setHovered={setHovered}/>
                 </Link>
             ))}

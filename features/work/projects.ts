@@ -4,6 +4,7 @@ interface Project {
     subtitle: string;
     year: string;
     slug: string;
+    smallCoverImage: string;
     coverImage: string;
     quickLinks: {
         website: string | null;
@@ -29,7 +30,8 @@ const projects: Project[] = [
         subtitle: "A booking and managing platform for DJs and Agencies",
         year: "2025",
         slug: "technosphere",
-        coverImage: "/img.png",
+        smallCoverImage: "/work/technosphere/cover-small.png",
+        coverImage: "/work/technosphere/cover.png",
         quickLinks: {
             website: "https://technosphere.app",
             sourceCode: "https://github.com/technosphere-app",
@@ -37,9 +39,10 @@ const projects: Project[] = [
         },
         technologies: [
             "Next.js",
-            "TypeScript",
-            "Tailwind CSS",
             "Framer Motion",
+            "Tailwind CSS",
+            "Prisma",
+            "Stripe",
         ],
         content: [
             {
@@ -49,7 +52,7 @@ const projects: Project[] = [
             },
             {
                 type: "image",
-                value: "/placeholder.svg?height=400&width=800&query=portfolio-builder-dashboard",
+                value: "/work/technosphere/screenshot-1.png",
             },
             {
                 type: "text",
@@ -58,7 +61,7 @@ const projects: Project[] = [
             },
             {
                 type: "image",
-                value: "/placeholder.svg?height=400&width=800&query=portfolio-builder-editor",
+                value: "/work/technosphere/screenshot-2.png",
             },
             {
                 type: "text",
@@ -67,9 +70,7 @@ const projects: Project[] = [
             },
         ],
         relatedProjects: [
-            {slug: "web-design-tool", title: "Web Design Tool", coverImage: "/img.png"},
-            {slug: "saas-landing-builder", title: "SaaS Landing Builder", coverImage: "/img.png"},
-            {slug: "personal-website-cms", title: "Personal Website CMS", coverImage: "/img.png"},
+
         ],
     }
 ];
