@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {FaDiscord} from "react-icons/fa";
 import { useState } from 'react';
+import { MotionScroll } from "@/components/motion-scroll";
 
 export default function ContactSection() {
     const [name, setName] = useState('');
@@ -66,8 +67,11 @@ export default function ContactSection() {
         }
     };
 
+
+// ... existing code
+
     return (
-        <main className="container m-8 mx-auto flex w-full items-center justify-between rounded-xl border border-white/20 bg-white/10 px-6 py-4 backdrop-blur-md">
+        <MotionScroll className="container m-8 mx-auto flex w-full items-center justify-between rounded-xl border border-white/20 bg-white/10 px-6 py-4 backdrop-blur-md">
             <div className="mx-auto w-full">
                 <ContactCard
                     title="Get in touch"
@@ -115,6 +119,6 @@ export default function ContactSection() {
                     </form>
                 </ContactCard>
             </div>
-        </main>
+        </MotionScroll>
     );
 }

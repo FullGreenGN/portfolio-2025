@@ -8,6 +8,7 @@ import type {Links} from "@/types/links";
 import Link from "next/link";
 import {HoverEncryptedLink} from "@/components/ui/encrypted-hover-text";
 import {Sheet, SheetContent, SheetFooter, SheetTrigger} from "@/components/ui/sheet";
+import {ThemeSwitcher} from "@/features/theme/theme-switcher";
 
 export const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
@@ -35,14 +36,14 @@ export const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center">
             <Link href={"https://polarisdev.fr"}>
-                <FaInfinity className="text-2xl text-white"/>
+                <FaInfinity className="text-2xl text-primary-foreground"/>
             </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden space-x-8 font-light text-white/80 md:flex">
+        <div className="hidden items-center space-x-8 align-text-bottom font-light text-primary-foreground/80 md:flex">
             {link.map((item, index) => (
-                <HoverEncryptedLink key={item.name ?? index} text={item.name} href={item.href} className="transition-colors hover:text-white" />
+                <HoverEncryptedLink key={item.name ?? index} text={item.name} href={item.href} className="transition-colors hover:text-secondary-foreground" />
             ))}
         </div>
 
@@ -54,18 +55,18 @@ function MobileNavbar({links}: {links: Links[]}) {
     return (
         <Sheet>
             <SheetTrigger className={"md:hidden"}>
-                <HiOutlineMenu className="text-2xl text-white"/>
+                <HiOutlineMenu className="text-2xl text-primary-foreground"/>
             </SheetTrigger>
             <SheetContent>
                 <div className="mt-10 ml-4 flex flex-col gap-6">
                     {links.map((item, index) => (
-                        <Link href={item.href} key={item.name ?? index} className="font-medium text-lg text-white/90 hover:text-white">
+                        <Link href={item.href} key={item.name ?? index} className="font-medium text-lg text-primary-foregrounde/90 hover:text-primary-foreground">
                             {item.name}
                         </Link>
                     ))}
                 </div>
                 <SheetFooter>
-                    <div className="mb-6 ml-4 text-white/70">© {new Date().getFullYear()} Jean‑Luc O.</div>
+                    <div className="mb-6 ml-4 text-primary-foreground/70">© {new Date().getFullYear()} Jean‑Luc O.</div>
                 </SheetFooter>
             </SheetContent>
 

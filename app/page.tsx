@@ -7,23 +7,35 @@ import projects from "@/features/work/projects";
 import {useState} from "react";
 
 
-export default function Home() {
- 	return (
- 		<main id="home">
-             <GLSLHills />
+import { MotionScroll } from "@/components/motion-scroll";
 
- 			{/* project sections */}
- 			<section id="projects">
- 				<div className={"container mx-auto flex min-h-screen w-full flex-col items-start justify-start px-6 py-32"}>
- 					<h2 className={"mb-10 font-semibold text-4xl text-white"}>Projects</h2>
-					<FocusCardsDemo />
- 				</div>
- 			</section>
-            <section id="contact" className={"w-full"}>
-                <ContactSection />
-            </section>
- 		</main>
- 	);
+export default function Home() {
+	return (
+		<main id="home">
+			<GLSLHills />
+
+			{/* project sections */}
+			<MotionScroll>
+				<section id="projects">
+					<div
+						className={
+							"container mx-auto flex min-h-screen w-full flex-col items-start justify-start px-6 py-32"
+						}
+					>
+						<h2 className={"mb-10 font-semibold text-4xl text-white"}>
+							Projects
+						</h2>
+						<FocusCardsDemo />
+					</div>
+				</section>
+			</MotionScroll>
+			<MotionScroll>
+				<section id="contact" className={"w-full"}>
+					<ContactSection />
+				</section>
+			</MotionScroll>
+		</main>
+	);
 }
 
 

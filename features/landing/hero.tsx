@@ -156,6 +156,13 @@ interface GLSLHillsProps {
     speed?: number;
 }
 
+import { MotionDiv } from "@/components/motion-div";
+
+const variants = {
+	hidden: { opacity: 0 },
+	visible: { opacity: 1 },
+};
+
 export const GLSLHills = ({width = '100vw', height = '100vh', cameraZ = 125, planeSize = 256, speed = 0.5}: GLSLHillsProps) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -216,7 +223,16 @@ export const GLSLHills = ({width = '100vw', height = '100vh', cameraZ = 125, pla
         };
     }, [cameraZ, planeSize, speed]);
 
-    return (<div ref={containerRef} style={{position: "relative", width, height, overflow: "hidden"}}>
+    return (<MotionDiv ref={containerRef} style={{position: "relative", width, height, overflow: "hidden"}}
+        initial="hidden"
+        animate="visible"
+        transition={{
+            delay: 0.5,
+            ease: "easeInOut",
+            duration: 0.5,
+        }}
+        variants={variants}
+    >
             <canvas
                 ref={canvasRef}
                 style={{
@@ -226,7 +242,7 @@ export const GLSLHills = ({width = '100vw', height = '100vh', cameraZ = 125, pla
             <div className="absolute inset-0 z-10 flex items-center justify-center">
                 <AnimatedHeroContent/>
             </div>
-        </div>);
+        </MotionDiv>);
 };
 
 function AnimatedHeroContent() {

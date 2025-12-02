@@ -1,3 +1,4 @@
+import { MotionDiv } from "@/components/motion-div";
 import type React from 'react';
 import { cn } from '@/lib/utils';
 import type {
@@ -19,6 +20,11 @@ type ContactCardProps = React.ComponentProps<'div'> & {
     formSectionClassName?: string;
 };
 
+const variants = {
+	hidden: { opacity: 0 },
+	visible: { opacity: 1 },
+};
+
 export function ContactCard({
                                 title = 'Contact With Us',
                                 description = 'If you have any questions regarding our Services or need help, please fill out the form here. We do our best to respond within 1 business day.',
@@ -26,15 +32,21 @@ export function ContactCard({
                                 className,
                                 formSectionClassName,
                                 children,
-                                ...props
                             }: ContactCardProps) {
     return (
-        <div
+        <MotionDiv
             className={cn(
                 'relative grid h-full w-full md:grid-cols-2 lg:grid-cols-3',
                 className,
             )}
-            {...props}
+            initial="hidden"
+            animate="visible"
+            transition={{
+                delay: 0.5,
+                ease: "easeInOut",
+                duration: 0.5,
+            }}
+            variants={variants}
         >
             <div className="flex flex-col justify-between lg:col-span-2">
                 <div className="relative h-full space-y-4 px-4 py-8 md:p-8">
@@ -59,7 +71,7 @@ export function ContactCard({
             >
                 {children}
             </div>
-        </div>
+        </MotionDiv>
     );
 }
 
